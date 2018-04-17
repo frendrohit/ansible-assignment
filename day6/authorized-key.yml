@@ -1,0 +1,13 @@
+---
+
+- hosts: localhost
+  tasks:
+  - name: Add SSH Key
+    authorized_key:
+      user: root
+      state: present
+      key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
+
+  - name: Ping using ansible
+    ping:
+     
