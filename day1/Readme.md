@@ -18,11 +18,4 @@ Problem statement to install:
 3. ansible webserver -m copy -a "src=/opt/index.html dest=/opt/html"
 
 4. ansible webserver -m service -a "name=nginx state=restarted"
-=======
-Ansible Installation        : 	yum install ansible
-To check Ansible version    : 	ansible --version
-Parameters in ansible.cfg   : 	Done
-set retry_files_save_path   :  	retry_files_save_path = ~/.ansible/retry-files
-Forks to 10                 : 	forks          = 10
-Problem statement to install:   nginx	Done , nginx.yml file is attached
->>>>>>> c308406ab98600cac40371b56427117940b20565
+
