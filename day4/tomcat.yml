@@ -1,0 +1,16 @@
+---
+
+- hosts: app
+  tasks:
+  - name: Install Tomcat
+    yum:
+      name: tomcat
+      state: latest
+  - name: Copy war file
+    copy:
+      src: /opt/tomcat/sample.war
+      dest: /var/lib/tomcat/webapps/
+  - name: Start Service
+    service:
+      name: tomcat
+      state: restarted
