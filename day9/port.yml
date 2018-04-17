@@ -1,0 +1,15 @@
+---
+
+- hosts: localhost
+
+  tasks:
+  - name: To check the open ports
+   shell: /opt/ansible-assignment/day9/openport.sh
+ 
+  - name: Disable all ports
+    firewalld:
+      port: 8081-8082/tcp
+      state: enabled
+  
+  - name: To check the openports again
+    shell: firewall-cmd --zone=public --list-ports > openport-check 
