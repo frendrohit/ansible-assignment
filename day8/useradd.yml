@@ -1,0 +1,63 @@
+---
+
+- hosts: localhost
+ 
+  tasks:
+  - name: Add User
+    user:
+      name: "{{ item }}"
+      generate_ssh_key: yes
+      password: $6$rounds=656000$sIUdVQgn63dqwkHt$Ri6M5y5m2.SW8mqHOKrutuEVfRo5GFh4Sahwz6c.0.pV02PxY7lOHFYdGTX7Ej1ZD62FsWBYNpkozsLQ1rwsn. 
+      group: ansible
+      state: present
+    with_items:
+      - testuser1
+      - testuser2
+      - testuser3
+      - testuser4
+      - testuser5
+
+  - name: Create directory
+    file:
+      path: /opt/ninja
+      state: directory
+      group: ansible
+      mode: 0755
+
+
+  - name: Add SSH key
+    authorized_key:
+      user: "{{ item }}"
+      state: present
+      key: "{{ lookup('file', '/home/{{ item }}/.ssh/id_rsa.pub') }}"
+    with_items:
+      - testuser1
+      - testuser2
+      - testuser3
+      - testuser4
+      - testuser5
+
+  - name: INSTALL LVM2
+    yum:
+      name: lvm2
+      state: latest
+
+  - name: ADD LVM
+    lvol:
+      vg: testlvm
+      lv: test
+      size: 512
+      pvs: /dev/sda
+
+  - name: EXT4 Filesystem
+    filesystem:
+      fstype: ext4
+      dev: /dev/mapper/testlvm-test
+
+  - name: Mount to ninja directory
+    mount:
+      path: /opt/ninja
+      src: /dev/mapper/testlvm-test
+      opts: rw
+      state: present
+       
